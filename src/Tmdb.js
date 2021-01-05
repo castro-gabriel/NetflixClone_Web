@@ -56,7 +56,27 @@ const Tmdb = {
                 items: await basicFetch(`/discover/movie?with_genres=99&api_key=${API_KEY}`)
             }
         ];
+    },
+
+    // Pegar informacoes de um filme especifico
+    getMovieInfo: async (movieID, type) => {
+        let info = {}
+
+        if(movieID) {
+            switch(type){
+                case 'movie':
+                    info = await basicFetch(`/movie/${movieID}?language=pt-BR&api_key=${API_KEY}`)
+                break;
+                case 'tv':
+                    info = await basicFetch(`/tv/${movieID}?language=pt-BR&api_key=${API_KEY}`)
+                break;
+            }
+        }
+
+        return info
     }
+
+
 
 }
 
