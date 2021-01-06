@@ -70,6 +70,8 @@ const Tmdb = {
                 case 'tv':
                     info = await basicFetch(`/tv/${movieID}?language=pt-BR&api_key=${API_KEY}`)
                 break;
+                default:
+                break;
             }
         }
 

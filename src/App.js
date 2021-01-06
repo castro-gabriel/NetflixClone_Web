@@ -3,17 +3,19 @@ import React, { useEffect, useState } from 'react';
 import './App.css'
 import Tmbd from './Tmdb';
 
-import FeatureMovie from './components/FeatureMovie'
-import MovieRow from './components/MovieRow'
-import featureMovie from './components/FeatureMovie';
+import Header from './components/Header/Header'
+import FeatureMovie from './components/FeatureMovie/FeatureMovie'
+import MovieRow from './components/MovieRow/MovieRow'
 
 const App = () => {
     
     // Basicamente para salvar a lista de filmes
     const [movieList, setMovieList] = useState([])
 
-    //
+    // Para manipular as informacoes 
     const [featureData, setFeatureData] = useState(null)
+
+    const [blackHeader, setBlackHeader] = useState(false)
 
     // Quando a tela for carregada, vai executar a função executada aqui
     useEffect(() => {
@@ -24,19 +26,40 @@ const App = () => {
 
             // Só podemos pegar filme em destaque após pegar a lista
             // Pegando o Feature
-            let originals = list.filter(i => i.slug === 'originals')
-            let randomChosen = Math.floor(Math.random() * (originals[0].items.results.length - 1))
-            let chosen = originals[0].items.results[randomChosen]
-            let chosenInfo = await Tmbd.getMovieInfo(chosen.id, 'tv')
+            let originals = list.filter(i => i.slug === 'originals') // pegando originals
+            let randomChosen = Math.floor(Math.random() * (originals[0].items.results.length - 1)) // pegando um aleatorio dos originals
+            let chosen = originals[0].items.results[randomChosen] // pegando um dos aleatorios
+            let chosenInfo = await Tmbd.getMovieInfo(chosen.id, 'tv') // pegando informacoes do escolhido
             
             setFeatureData(chosenInfo)
         }
 
         loadAll()
     }, []);
+
+    // Evento de monitoramento da pagina, para sabermos quando dar scroll
+    useEffect(() => {
+        const scrollListener = () => {
+            if(window.scrollY > 10) {
+                setBlackHeader(true)
+            }else{
+                setBlackHeader(false)
+            }
+        }
+
+        // Vai adicionar o evento no scroll
+        window.addEventListener('scroll', scrollListener)
+
+        // Vai remover o evento
+        return () => {
+            window.removeEventListener('scroll', scrollListener)
+        }
+    })
     
     return (
         <div className="page">
+
+            <Header black={blackHeader}/>
 
             {/* Não precisamos passar key porque não é um loop */}
             {featureData && 
