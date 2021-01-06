@@ -59,7 +59,7 @@ const App = () => {
     return (
         <div className="page">
 
-            <Header black={blackHeader}/>
+            <Header black={blackHeader}/> 
 
             {/* Não precisamos passar key porque não é um loop */}
             {featureData && 
@@ -72,6 +72,19 @@ const App = () => {
                     <MovieRow key={key} title={item.title} items={item.items} />
                 ))}
             </section>
+
+            <footer>
+                Feito por Gabriel S. Castro - <span role="img" aria-label="coracao"><a href="https://www.linkedin.com/in/gabrielsouzacastro/">LinkedIn</a></span><br />
+                Direitos de imagem para Netflix<br /> 
+                Dados pegos do site themoviedb.org
+            </footer>
+
+            {movieList.length <= 0 &&
+                <div className="loading">
+                        <img src="https://www.filmelier.com/pt/br/news/wp-content/uploads/2020/03/netflix-loading.gif" alt="Carregando"/>
+                </div>
+            }
+
         </div>
     );
 }
